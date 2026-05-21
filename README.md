@@ -1,12 +1,71 @@
+> **Este é um fork mantido pela [Altrs Consult](https://github.com/altrsconsult) do projeto original [twentyhq/twenty](https://github.com/twentyhq/twenty).**
+> Mantemos a versão integral do Twenty e aplicamos pequenas customizações regionais para melhor atendimento à comunidade brasileira.
+
+---
+
 <p align="center">
   <a href="https://www.twenty.com">
     <img src="./packages/twenty-website/public/images/core/logo.svg" width="100px" alt="Twenty logo" />
   </a>
 </p>
 
-<h2 align="center" >The #1 Open-Source CRM</h2>
+<h2 align="center">Twenty CRM · Fork Brasil — altrsconsult</h2>
 
-<p align="center"><a href="https://twenty.com"><img src="./packages/twenty-website/public/images/readme/globe-icon.svg" width="12" height="12"/> Website</a> · <a href="https://docs.twenty.com"><img src="./packages/twenty-website/public/images/readme/book-icon.svg" width="12" height="12"/> Documentation</a> · <a href="https://github.com/orgs/twentyhq/projects/1"><img src="./packages/twenty-website/public/images/readme/map-icon.svg" width="12" height="12"/> Roadmap </a> · <a href="https://discord.gg/cx5n4Jzs57"><img src="./packages/twenty-website/public/images/readme/discord-icon.svg" width="12" height="12"/> Discord</a> · <a href="https://www.figma.com/file/xt8O9mFeLl46C5InWwoMrN/Twenty"><img src="./packages/twenty-website/public/images/readme/figma-icon.webp"  width="12" height="12"/>  Figma</a></p>
+<p align="center">
+  <a href="https://github.com/twentyhq/twenty">Upstream oficial</a> ·
+  <a href="https://docs.twenty.com">Documentação</a> ·
+  <a href="https://github.com/altrsconsult/twenty/blob/main/CUSTOMIZATIONS.md">Customizações</a> ·
+  <a href="mailto:contato@altrs.net">Contato</a>
+</p>
+
+---
+
+## Sobre este fork
+
+Este repositório mantém uma cópia integral e atualizada do [Twenty CRM](https://github.com/twentyhq/twenty) com customizações voltadas ao mercado brasileiro:
+
+- **Traduções PT-BR** — correções e complementos às traduções oficiais
+- **Ajustes de UI/UX** — pequenas melhorias de experiência regional
+- **Sincronização com upstream** — acompanhamos as releases oficiais e validamos antes de publicar
+
+A imagem Docker gerada por este fork está disponível publicamente em:
+
+```
+ghcr.io/altrsconsult/twenty:latest
+```
+
+## Uso livre
+
+Este fork é de uso livre, nos mesmos termos da licença do projeto original (AGPL-3.0).
+Você pode usar, modificar e redistribuir livremente.
+
+## Consultoria e instalação
+
+A Altrs Consult oferece serviços para quem quiser adotar o Twenty com suporte especializado:
+
+- **Instalação e configuração** — self-hosted em sua infraestrutura
+- **Parametrização guiada** — modelagem de dados, objetos customizados, workflows
+- **Treinamento** — capacitação da equipe
+- **Suporte contínuo** — manutenção e atualizações gerenciadas
+
+Entre em contato: **contato@altrs.net**
+
+---
+
+## Desenvolvimento local
+
+```bash
+# Iniciar backend + frontend com hot-reload
+./start.sh
+```
+
+- Frontend: http://localhost:3001
+- Backend: http://localhost:2020
+- Login demo: `tim@apple.dev` / `tim@apple.dev`
+
+Veja [CUSTOMIZATIONS.md](./CUSTOMIZATIONS.md) para o fluxo completo de trabalho.
+
+---
 
 <p align="center">
   <a href="https://www.twenty.com">

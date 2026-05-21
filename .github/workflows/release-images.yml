@@ -1,0 +1,77 @@
+name: release-images
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Tag manual para publicar no GHCR (ex: v2.6.0-aw.1)"
+        required: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  build-twenty:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar variáveis de tag
+        id: vars
+        shell: bash
+        run: |
+          OWNER_LOWER="$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            IMAGE_TAG="${{ github.event.inputs.image_tag }}"
+          else
+            IMAGE_TAG="${{ github.ref_name }}"
+          fi
+          # Valida padrão vX.X.X ou vX.X.X-aw.N
+          if ! [[ "${IMAGE_TAG}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-aw\.[0-9]+)?$ ]]; then
+            echo "Tag inválida: ${IMAGE_TAG}. Use vX.X.X ou vX.X.X-aw.N"
+            exit 1
+          fi
+          echo "owner_lower=${OWNER_LOWER}" >> "$GITHUB_OUTPUT"
+          echo "image_tag=${IMAGE_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Login no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build e push da imagem Twenty (monolito frontend+backend)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: ./packages/twenty-docker/twenty/Dockerfile
+          target: twenty
+          push: true
+          build-args: |
+            APP_VERSION=${{ steps.vars.outputs.image_tag }}
+          tags: |
+            ghcr.io/${{ steps.vars.outputs.owner_lower }}/twenty:${{ steps.vars.outputs.image_tag }}
+            ghcr.io/${{ steps.vars.outputs.owner_lower }}/twenty:latest
+
+      - name: Garantir GitHub Release como latest
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.vars.outputs.image_tag }}
+        shell: bash
+        run: |
+          if gh release view "${RELEASE_TAG}" >/dev/null 2>&1; then
+            gh release edit "${RELEASE_TAG}" --latest --title "${RELEASE_TAG}"
+          else
+            gh release create "${RELEASE_TAG}" --latest --generate-notes --title "${RELEASE_TAG}"
+          fi
